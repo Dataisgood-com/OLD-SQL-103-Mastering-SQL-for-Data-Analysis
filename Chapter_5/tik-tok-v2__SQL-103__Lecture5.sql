@@ -5,192 +5,6 @@ DROP DATABASE IF EXISTS TikTok_v2;
 CREATE DATABASE TikTok_v2;
 
 -- Switch to the TikTok v2 database
-USE TikTok;
-
--- Create the Users table
-CREATE TABLE Users (
-user_id INT PRIMARY KEY,
-username VARCHAR(255),
-email VARCHAR(255),
-bio TEXT,
-followers INT,
-following INT
-);
-
--- Create the Videos table
-CREATE TABLE Videos (
-video_id INT PRIMARY KEY,
-user_id INT,
-caption TEXT,
-likes INT,
-views INT,
-FOREIGN KEY (user_id) REFERENCES Users(user_id)
-);
-
--- Create the Comments table
-CREATE TABLE Comments (
-comment_id INT PRIMARY KEY,
-video_id INT,
-user_id INT,
-comment TEXT,
-FOREIGN KEY (video_id) REFERENCES Videos(video_id),
-FOREIGN KEY (user_id) REFERENCES Users(user_id)
-);
-
--- Create the Favorites table
-CREATE TABLE Favorites (
-user_id INT,
-video_id INT,
-PRIMARY KEY (user_id, video_id),
-FOREIGN KEY (user_id) REFERENCES Users(user_id),
-FOREIGN KEY (video_id) REFERENCES Videos(video_id)
-);
-
--- Insert sample data into the Users table
-INSERT INTO Users (user_id, username, email, bio, followers, following) VALUES
-(1, 'akshay_kumar', 'akshay_kumar@gmail.com', 'Actor', 5000000, 50),
-(2, 'deepikapadukone', 'deepikapadukone@gmail.com', 'Actress', 10000000, 100),
-(3, 'hrithikroshan', 'hrithikroshan@gmail.com', 'Actor', 2000000, 20),
-(4, 'govinda', 'govinda@gmail.com', 'Actor', 100000, 10),
-(5, 'madhuridixit', 'madhuridixit@gmail.com', 'Actress', 500000, 50),
-(6, 'iamsrk', 'iamsrk@gmail.com', 'Actor', 3000000, 30),
-(7, 'tigerjackieshroff', 'tigerjackieshroff@gmail.com', 'Actor', 1500000, 15),
-(8, 'raveenatandon', 'raveenatandon@gmail.com', 'Actress', 50000, 5),
-(9, 'sunilshetty', 'sunilshetty@gmail.com', 'Actor', 100000, 10),
-(10, 'himeshreshammiya', 'himeshreshammiya@gmail.com', 'Singer', 5000, 50),
-(11, 'shreyaghoshal', 'shreyaghoshal@gmail.com', 'Singer', 10000, 100);
-
--- Insert sample data into the Videos table
-INSERT INTO Videos (video_id, user_id, caption, likes, views) VALUES
-    (1, 1, 'Khiladiyon ka khiladi', 10000, 1000000),
-    (2, 2, 'Chennai Express', 5000, 500000),
-    (3, 3, 'Koi Mil Gaya', 20000, 2000000),
-    (4, 4, 'Hero No. 1', 1000, 100000),
-    (5, 5, 'Hum Aapke Hain Koun', 5000, 500000),
-    (6, 6, 'Dilwale', 7000, 700000),
-    (7, 7, 'Baaghi 3', 8000, 800000),
-    (8, 1, 'Hera Pheri', 30000, 3000000),
-    (9, 2, 'Padmaavat', 4000, 400000),
-    (10, 3, 'War', 9000, 900000),
-    (11, 4, 'Aankhen', 2000, 200000),
-    (12, 5, 'Dil To Pagal Hai', 6000, 600000);
-
--- Insert sample data into the Comments table
-INSERT INTO Comments (comment_id, video_id, user_id, comment) VALUES
-    (1, 1, 2, 'Tum humesha aise hi bhaagne waale the ya aaj koi special occasion hai?'),
-    (2, 1, 3, 'Love the movie!'),
-    (3, 2, 4, 'Bohot samay baad ek acha gaana sunne ko mila.'),
-    (5, 3, 5, 'Hrithik bhai, aapke dance moves toh mere dil mein bas gaye hai! Aap toh dancing ka Baap nikle!'),
-    (6, 3, 7, 'I love the music in this movie'),
-    (7, 4, 1, 'Govinda, you are hilarious!'),
-    (8, 5, 2, 'Madhuri, you are a timeless beauty'),
-    (9, 5, 3, 'This is one of my favorite movies!'),
-    (10, 6, 4, 'Shahrukh, you are the king of Bollywood!'),
-    (11, 7, 5, 'Tiger, Chote bache ho kya'),
-    (12, 7, 6, 'I love the action scenes in this movie'),
-    (13, 8, 7, 'One of the funniest movies ever!'),
-    (14, 9, 1, 'Sunil, dilwale to bahut dekhe hai, par jo pyaar mei pagal ho jaaye aise dilwale ko pehli baar dekha'),
-    (15, 10, 2, 'Himesh, Toip utar kar naach!'),
-    (16, 11, 3, 'Shreya, your voice is magical!');
-
--- Insert sample data into the Favorites table
-INSERT INTO Favorites (user_id, video_id) VALUES
-    (1, 3),
-    (1, 7),
-    (2, 1),
-    (2, 10),
-    (3, 2),
-    (4, 5),
-    (4, 8),
-    (5, 4),
-    (6, 6),
-    (7, 11),
-    (8, 9),
-    (9, 12),
-    (10, 1),
-    (11, 3),
-    (11, 6);
-
-
--- Add the 2021 Events table
-CREATE TABLE `2021_Events` (
-  `event_id` INT PRIMARY KEY,
-  `user_id` INT,
-  `video_id` INT,
-  `comment_id` INT,
-  `favorite_id` INT,
-  `event_type` ENUM('comment', 'favorite', 'video_create') NOT NULL,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Add the 2022 Events table
-CREATE TABLE `2022_Events` (
-  `event_id` INT PRIMARY KEY,
-  `user_id` INT,
-  `video_id` INT,
-  `comment_id` INT,
-  `favorite_id` INT,
-  `event_type` ENUM('comment', 'favorite', 'video_create') NOT NULL,
-  `device_type` ENUM('mobile', 'ipad', 'laptop') NOT NULL,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-);
-
-
--- Insert data into the Events2021 table
-INSERT INTO Events2021 (event_id, user_id, video_id, event_type, event_date) VALUES
-(1, 1, 3, 'comment', '2021-01-01'),
-(2, 2, 4, 'favorite', '2021-01-02'),
-(3, 3, 1, 'video', '2021-01-03'),
-(4, 4, 5, 'comment', '2021-01-04'),
-(5, 5, 2, 'favorite', '2021-01-05'),
-(6, 1, 6, 'comment', '2021-02-01'),
-(7, 2, 7, 'favorite', '2021-02-02'),
-(8, 3, 2, 'video', '2021-02-03'),
-(9, 4, 6, 'comment', '2021-02-04'),
-(10, 5, 1, 'favorite', '2021-02-05'),
-(11, 1, 7, 'comment', '2021-03-01'),
-(12, 2, 5, 'favorite', '2021-03-02'),
-(13, 3, 3, 'video', '2021-03-03'),
-(14, 4, 2, 'comment', '2021-03-04'),
-(15, 5, 4, 'favorite', '2021-03-05');
-
-
--- Insert sample data into the Events2022 table
-INSERT INTO Events2022 (event_id, user_id, video_id, event_type, event_date, device_type, location) VALUES
-(1, 1, 9, 'video', '2022-01-01', 'mobile', 'New York'),
-(2, 2, 10, 'comment', '2022-01-02', 'laptop', 'Los Angeles'),
-(3, 3, 8, 'favorite', '2022-01-03', 'ipad', 'Chicago'),
-(4, 4, 7, 'comment', '2022-01-04', 'mobile', 'Houston'),
-(5, 5, 6, 'favorite', '2022-01-05', 'ipad', 'Miami'),
-(6, 1, 10, 'comment', '2022-02-01', 'mobile', 'New York'),
-(7, 2, 9, 'favorite', '2022-02-02', 'laptop', 'Los Angeles'),
-(8, 3, 7, 'video', '2022-02-03', 'ipad', 'Chicago'),
-(9, 4, 8, 'comment', '2022-02-04', 'mobile', 'Houston'),
-(10, 5, 6, 'favorite', '2022-02-05', 'ipad', 'Miami'),
-(11, 1, 8, 'comment', '2022-03-01', 'mobile', 'New York'),
-(12, 2, 7, 'favorite', '2022-03-02', 'laptop', 'Los Angeles'),
-(13, 3, 9, 'video', '2022-03-03', 'ipad', 'Chicago'),
-(14, 4, 10, 'comment', '2022-03-04', 'mobile', 'Houston'),
-(15, 5, 7, 'favorite', '2022-03-05', 'ipad', 'Miami'),
-(16, 1, 8, 'comment', '2022-04-01', 'mobile', 'New York'),
-(17, 2, 9, 'favorite', '2022-04-02', 'laptop', 'Los Angeles'),
-(18, 3, 10, 'video', '2022-04-03', 'ipad', 'Chicago'),
-(19, 4, 7, 'comment', '2022-04-04', 'mobile', 'Houston'),
-(20, 5, 9, 'favorite', '2022-04-05', 'ipad', 'Miami'),
-(21, 1, 10, 'comment', '2022-05-01', 'mobile', 'New York'),
-(22, 2, 8, 'favorite', '2022-05-02', 'laptop', 'Los Angeles'),
-(23, 3, 9, 'video', '2022-05-03', 'ipad', 'Chicago'),
-(24, 4, 8, 'comment', '2022-05-04', 'mobile', 'Houston'),
-(25, 5, 10, 'favorite', '2022-05-05', 'ipad', 'Miami');
-
-
--- Add sample data to the 2021 Events table-- Let's drop the database if it already exists to ensure that we start with a clean slate:
-DROP DATABASE IF EXISTS TikTok_v2;
-
--- Create the TikTok v2 database
-CREATE DATABASE TikTok_v2;
-
--- Switch to the TikTok v2 database
 USE TikTok_v2;
 
 -- Create the Users table
@@ -232,72 +46,8 @@ FOREIGN KEY (user_id) REFERENCES Users(user_id),
 FOREIGN KEY (video_id) REFERENCES Videos(video_id)
 );
 
--- Insert sample data into the Users table
-INSERT INTO Users (user_id, username, email, bio, followers, following) VALUES
-(1, 'akshay_kumar', 'akshay_kumar@gmail.com', 'Actor', 5000000, 50),
-(2, 'deepikapadukone', 'deepikapadukone@gmail.com', 'Actress', 10000000, 100),
-(3, 'hrithikroshan', 'hrithikroshan@gmail.com', 'Actor', 2000000, 20),
-(4, 'govinda', 'govinda@gmail.com', 'Actor', 100000, 10),
-(5, 'madhuridixit', 'madhuridixit@gmail.com', 'Actress', 500000, 50),
-(6, 'iamsrk', 'iamsrk@gmail.com', 'Actor', 3000000, 30),
-(7, 'tigerjackieshroff', 'tigerjackieshroff@gmail.com', 'Actor', 1500000, 15),
-(8, 'raveenatandon', 'raveenatandon@gmail.com', 'Actress', 50000, 5),
-(9, 'sunilshetty', 'sunilshetty@gmail.com', 'Actor', 100000, 10),
-(10, 'himeshreshammiya', 'himeshreshammiya@gmail.com', 'Singer', 5000, 50),
-(11, 'shreyaghoshal', 'shreyaghoshal@gmail.com', 'Singer', 10000, 100);
 
--- Insert sample data into the Videos table
-INSERT INTO Videos (video_id, user_id, caption, likes, views) VALUES
-    (1, 1, 'Khiladiyon ka khiladi', 10000, 1000000),
-    (2, 2, 'Chennai Express', 5000, 500000),
-    (3, 3, 'Koi Mil Gaya', 20000, 2000000),
-    (4, 4, 'Hero No. 1', 1000, 100000),
-    (5, 5, 'Hum Aapke Hain Koun', 5000, 500000),
-    (6, 6, 'Dilwale', 7000, 700000),
-    (7, 7, 'Baaghi 3', 8000, 800000),
-    (8, 1, 'Hera Pheri', 30000, 3000000),
-    (9, 2, 'Padmaavat', 4000, 400000),
-    (10, 3, 'War', 9000, 900000),
-    (11, 4, 'Aankhen', 2000, 200000),
-    (12, 5, 'Dil To Pagal Hai', 6000, 600000);
-
--- Insert sample data into the Comments table
-INSERT INTO Comments (comment_id, video_id, user_id, comment) VALUES
-    (1, 1, 2, 'Tum humesha aise hi bhaagne waale the ya aaj koi special occasion hai?'),
-    (2, 1, 3, 'Love the movie!'),
-    (3, 2, 4, 'Bohot samay baad ek acha gaana sunne ko mila.'),
-    (5, 3, 5, 'Hrithik bhai, aapke dance moves toh mere dil mein bas gaye hai! Aap toh dancing ka Baap nikle!'),
-    (6, 3, 7, 'I love the music in this movie'),
-    (7, 4, 1, 'Govinda, you are hilarious!'),
-    (8, 5, 2, 'Madhuri, you are a timeless beauty'),
-    (9, 5, 3, 'This is one of my favorite movies!'),
-    (10, 6, 4, 'Shahrukh, you are the king of Bollywood!'),
-    (11, 7, 5, 'Tiger, Chote bache ho kya'),
-    (12, 7, 6, 'I love the action scenes in this movie'),
-    (13, 8, 7, 'One of the funniest movies ever!'),
-    (14, 9, 1, 'Sunil, dilwale to bahut dekhe hai, par jo pyaar mei pagal ho jaaye aise dilwale ko pehli baar dekha'),
-    (15, 10, 2, 'Himesh, Toip utar kar naach!'),
-    (16, 11, 3, 'Shreya, your voice is magical!');
-
--- Insert sample data into the Favorites table
-INSERT INTO Favorites (user_id, video_id) VALUES
-    (1, 3),
-    (1, 7),
-    (2, 1),
-    (2, 10),
-    (3, 2),
-    (4, 5),
-    (4, 8),
-    (5, 4),
-    (6, 6),
-    (7, 11),
-    (8, 9),
-    (9, 12),
-    (10, 1),
-    (11, 3),
-    (11, 6);
-
--- Add the 2021 Events table
+-- Add the 2021 Events table with modified foreign key constraints
 CREATE TABLE `2021_Events` (
   `event_id` INT PRIMARY KEY,
   `user_id` INT,
@@ -305,10 +55,13 @@ CREATE TABLE `2021_Events` (
   `comment_id` INT,
   `favorite_id` INT,
   `event_type` ENUM('comment', 'favorite', 'video_create') NOT NULL,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`user_id`) REFERENCES `Users`(`user_id`),
+  FOREIGN KEY (`video_id`) REFERENCES `Videos`(`video_id`),
+  FOREIGN KEY (`comment_id`) REFERENCES `Comments`(`comment_id`)
 );
 
--- Add the 2022 Events table
+-- Add the 2022 Events table with modified foreign key constraints
 CREATE TABLE `2022_Events` (
   `event_id` INT PRIMARY KEY,
   `user_id` INT,
@@ -317,56 +70,139 @@ CREATE TABLE `2022_Events` (
   `favorite_id` INT,
   `event_type` ENUM('comment', 'favorite', 'video_create') NOT NULL,
   `device_type` ENUM('mobile', 'ipad', 'laptop') NOT NULL,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`user_id`) REFERENCES `Users`(`user_id`),
+  FOREIGN KEY (`video_id`) REFERENCES `Videos`(`video_id`),
+  FOREIGN KEY (`comment_id`) REFERENCES `Comments`(`comment_id`)
 );
 
 
--- Add sample data to the 2021 Events table
-INSERT INTO `2021_Events` (`event_id`, `user_id`, `video_id`, `comment_id`, `favorite_id`, `event_type`)
-VALUES
-  (1, 1, 3, 1, NULL, 'comment'),
-  (2, 2, NULL, NULL, 1, 'favorite'),
-  (3, 3, 2, NULL, NULL, 'video_create'),
-  (4, 4, 5, 2, NULL, 'comment'),
-  (5, 5, 6, NULL, NULL, 'video_create'),
-  (6, 6, 1, NULL, 2, 'favorite'),
-  (7, 7, NULL, 3, NULL, 'comment'),
-  (8, 8, 4, NULL, NULL, 'video_create');
 
--- Add sample data to the 2022 Events table
-INSERT INTO `2022_Events` (`event_id`, `user_id`, `video_id`, `comment_id`, `favorite_id`, `event_type`, `device_type`)
+-- Insert sample data into Users table
+INSERT INTO Users (user_id, username, email, bio, followers, following)
 VALUES
-  (1, 1, 3, NULL, NULL, 'video_create', 'mobile'),
-  (2, 2, NULL, 2, NULL, 'comment', 'ipad'),
-  (3, 3, NULL, NULL, 2, 'favorite', 'laptop'),
-  (4, 4, 7, NULL, NULL, 'video_create', 'laptop'),
-  (5, 5, NULL, 1, NULL, 'comment', 'mobile'),
-  (6, 6, 10, NULL, 1, 'favorite', 'laptop'),
-  (7, 7, NULL, 4, NULL, 'comment', 'ipad'),
-  (8, 8, 11, NULL, NULL, 'video_create', 'mobile');
-  
-  
-  
+(1, 'ShahRukh_Khan', 'shahrukh@example.com', 'Bollywood King - Dilwale', 2000000, 100),
+(2, 'Priyanka_Chopra', 'priyanka@example.com', 'Global Star - Desi Girl', 1800000, 120),
+(3, 'Amitabh_Bachchan', 'amitabh@example.com', 'Bollywood Shehenshah', 2500000, 75),
+(4, 'Deepika_Padukone', 'deepika@example.com', 'Mastani of Bollywood', 2200000, 150),
+(5, 'Salman_Khan', 'salman@example.com', 'Bhaijaan of Bollywood', 2300000, 80),
+(6, 'Aamir_Khan', 'aamir@example.com', 'Mr. Perfectionist', 1900000, 50),
+(7, 'Kareena_Kapoor', 'kareena@example.com', 'Bebo of Bollywood', 1700000, 130),
+(8, 'Ranveer_Singh', 'ranveer@example.com', 'Energetic Superstar', 2100000, 110),
+(9, 'Katrina_Kaif', 'katrina@example.com', 'Bollywood Barbie', 1600000, 140),
+(10, 'Hrithik_Roshan', 'hrithik@example.com', 'Greek God of Bollywood', 2400000, 90),
+(11, 'Alia_Bhatt', 'alia@example.com', 'Bollywood''s Rising Star', 1500000, 200),
+(12, 'Akshay_Kumar', 'akshay@example.com', 'Khiladi of Bollywood', 2600000, 70);
 
-INSERT INTO `2021_Events` (`event_id`, `user_id`, `video_id`, `comment_id`, `favorite_id`, `event_type`)
+-- Insert sample data into Videos table
+INSERT INTO Videos (video_id, user_id, caption, likes, views)
 VALUES
-  (1, 1, 3, 1, NULL, 'comment'),
-  (2, 2, NULL, NULL, 1, 'favorite'),
-  (3, 3, 2, NULL, NULL, 'video_create'),
-  (4, 4, 5, 2, NULL, 'comment'),
-  (5, 5, 6, NULL, NULL, 'video_create'),
-  (6, 6, 1, NULL, 2, 'favorite'),
-  (7, 7, NULL, 3, NULL, 'comment'),
-  (8, 8, 4, NULL, NULL, 'video_create');
+(1, 1, 'DDLJ - Raj Simran train scene', 35000, 200000),
+(2, 1, 'My Name is Khan - Mandira''s speech', 28000, 175000),
+(3, 2, 'Quantico - Alex saves the day', 15000, 120000),
+(4, 2, 'Bajirao Mastani - Kashibai dance', 18000, 130000),
+(5, 3, 'Sholay - Yeh dosti hum nahi todenge', 42000, 240000),
+(6, 3, 'Amitabh recites Madhushala', 38000, 230000),
+(7, 4, 'Padmaavat - Ghoomar dance', 25000, 150000),
+(8, 4, 'Cocktail - Deepika''s entry', 22000, 140000),
+(9, 5, 'Bajrangi Bhaijaan - Munni finds her voice', 32000, 190000),
+(10, 5, 'Dabangg - Chulbul Pandey intro', 29000, 180000),
+(11, 6, '3 Idiots - All is Well scene', 26000, 160000),
+(12, 6, 'Lagaan - Winning moment', 24000, 155000),
+(13, 7, 'Jab We Met - Geet meets Aditya', 21000, 135000),
+(14, 7, 'Kabhi Khushi Kabhie Gham - Pooja''s entry', 23000, 145000),
+(15, 8, 'Gully Boy - Apna Time Aayega rap', 31000, 185000),
+(16, 8, 'Bajirao Mastani - Bajirao''s entry', 27000, 170000),
+(17, 9, 'Dhoom 3 - Kamli dance', 20000, 125000),
+(18, 9, 'Namastey London - Jazz confronts Arjun', 17000, 110000),
+(19, 10, 'Krrish - Flying to save the day', 33000, 195000),
+(20, 10, 'Jodhaa Akbar - Azeem-O-Shaan Shahenshah', 30000, 185000);
 
--- Add sample data to the 2022 Events table
-INSERT INTO `2022_Events` (`event_id`, `user_id`, `video_id`, `comment_id`, `favorite_id`, `event_type`, `device_type`)
+-- Insert sample data into Comments table
+INSERT INTO Comments (comment_id, video_id, user_id, comment)
 VALUES
-  (1, 1, 3, NULL, NULL, 'video_create', 'mobile'),
-  (2, 2, NULL, 2, NULL, 'comment', 'ipad'),
-  (3, 3, NULL, NULL, 2, 'favorite', 'laptop'),
-  (4, 4, 7, NULL, NULL, 'video_create', 'laptop'),
-  (5, 5, NULL, 1, NULL, 'comment', 'mobile'),
-  (6, 6, 10, NULL, 1, 'favorite', 'laptop'),
-  (7, 7, NULL, 4, NULL, 'comment', 'ipad'),
-  (8, 8, 11, NULL, NULL, 'video_create', 'mobile');
+(1, 1, 2, 'Raj and Simran are iconic! #DDLJ'),
+(2, 1, 6, 'All time favorite movie scene!'),
+(3, 2, 3, 'Khan sahab, aap toh badshah ho!'),
+(4, 3, 1, 'Priyanka, you make India proud!'),
+(5, 4, 8, 'Bajirao and Mastani''s chemistry is amazing!'),
+(6, 5, 12, 'Yeh dosti hum nahi todenge - evergreen song!'),
+(7, 6, 11, 'Amit ji, your voice is mesmerizing.'),
+(8, 7, 5, 'Deepika, you are the true queen of Bollywood!'),
+(9, 8, 7, 'Loved your performance in Cocktail!'),
+(10, 9, 10, 'Salman bhai, Bajrangi Bhaijaan touched my heart.'),
+(11, 10, 3, 'Chulbul Pandey, aapka style hai kamal.'),
+(12, 11, 4, '3 Idiots - a film that will always be relevant.'),
+(13, 12, 9, 'Lagaan - a true masterpiece! Hats off, Aamir.'),
+(14, 13, 1, 'Kareena, you were amazing as Geet!'),
+(15, 14, 2, 'Poo, you are fabulous!'),
+(16, 15, 3, 'Ranveer, you are an inspiration to all Gully Boys!'),
+(17, 16, 6, 'Bajirao ne mastani se mohabbat ki hai, ayyashi nahi!'),
+(18, 17, 7, 'Katrina, your dance moves are stunning!'),
+(19, 18, 8, 'Namastey London - one of my favorite films!'),
+(20, 19, 5, 'Hrithik, you are the real superhero of Bollywood!'),
+(21, 20, 11, 'Jodhaa Akbar - a timeless love story!'),
+(22, 1, 7, 'DDLJ never gets old! Love from Bebo.'),
+(23, 2, 10, 'My Name is Khan - a movie that touched millions.'),
+(24, 4, 1, 'Priyanka, you are a true desi girl!'),
+(25, 7, 9, 'Deepika, you are a true diva!');
+
+-- Insert sample data into Favorites table
+INSERT INTO Favorites (user_id, video_id)
+VALUES
+(1, 5),
+(2, 7),
+(3, 1),
+(4, 8),
+(5, 12),
+(6, 11),
+(7, 2),
+(8, 15),
+(9, 17),
+(10, 20),
+(11, 3),
+(12, 6);
+
+
+-- Insert sample data into 2021_Events table
+INSERT INTO `2021_Events` (event_id, user_id, video_id, comment_id, event_type)
+VALUES
+(1, 1, 1, NULL, 'video_create'),
+(2, 2, NULL, 1, 'comment'),
+(3, 6, NULL, 2, 'comment'),
+(4, 2, 3, NULL, 'video_create'),
+(5, 3, NULL, 3, 'comment'),
+(6, 3, 5, NULL, 'video_create'),
+(7, 12, NULL, 6, 'comment'),
+(8, 4, 7, NULL, 'video_create'),
+(9, 5, NULL, 8, 'comment');
+
+-- Insert sample data into 2022_Events table
+INSERT INTO `2022_Events` (event_id, user_id, video_id, comment_id, event_type, device_type)
+VALUES
+(1, 4, 8, NULL, 'video_create', 'mobile'),
+(2, 7, NULL, 9, 'comment', 'ipad'),
+(3, 5, 9, NULL, 'video_create', 'laptop'),
+(4, 10, NULL, 10, 'comment', 'mobile'),
+(5, 3, NULL, 11, 'comment', 'ipad'),
+(6, 6, 11, NULL, 'video_create', 'laptop'),
+(7, 4, NULL, 12, 'comment', 'mobile'),
+(8, 9, NULL, 13, 'comment', 'ipad'),
+(9, 1, NULL, 14, 'comment', 'laptop'),
+(10, 2, NULL, 15, 'comment', 'mobile'),
+(11, 3, NULL, 16, 'comment', 'ipad'),
+(12, 6, NULL, 17, 'comment', 'laptop'),
+(13, 7, NULL, 18, 'comment', 'mobile'),
+(14, 8, NULL, 19, 'comment', 'ipad'),
+(15, 5, NULL, 20, 'comment', 'laptop'),
+(16, 11, NULL, 21, 'comment', 'mobile'),
+(17, 7, NULL, 22, 'comment', 'ipad'),
+(18, 10, NULL, 23, 'comment', 'laptop'),
+(19, 1, NULL, 24, 'comment', 'mobile'),
+(20, 9, NULL, 25, 'comment', 'ipad');
+
+
+
+
+
+
